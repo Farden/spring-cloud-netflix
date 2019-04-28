@@ -6,28 +6,13 @@ pipeline {
         git(url: 'https://github.com/Farden/spring-cloud-netflix.git', branch: 'master', credentialsId: 'github')
       }
     }
-    stage('Build') {
-      parallel {
-        stage('Build') {
-          steps {
-            sh 'mvn clean'
-          }
+    stage ('Build and Package') {
+
+            steps {
+                withMaven(maven : 'maven') {
+                    sh 'mvn clean package'
+                }
+            }
         }
-        stage('clean') {
-          steps {
-            sh 'mvn clean'
-          }
-        }
-        stage('compile') {
-          steps {
-            sh 'mvn compile'
-          }
-        }
-        stage('package') {
-          steps {
-            sh 'mvn package'
-          }
-        }
-      }
     }
-  }
+}
